@@ -11,17 +11,29 @@ import internetwerk.Toestel;
 
 class InternetwerkTest {
 
+	Toestel pc = new Toestel();
+	Netwerk wifi = new Netwerk();
+	
 	@Test
-	void test() {
-		Toestel pc = new Toestel();
+	void testToestelConstructor() {
 		assertEquals(Set.of(), pc.getNetwerken());
-		
-		Netwerk wifi = new Netwerk();
+	}
+	
+	@Test
+	void testNetwerkConstructor() {
 		assertEquals(Set.of(), wifi.getToestellen());
-		
+	}
+	
+	@Test
+	void testVerbind() {
 		pc.verbind(wifi);
 		assertEquals(Set.of(wifi), pc.getNetwerken());
 		assertEquals(Set.of(pc), wifi.getToestellen());
+	}
+	
+	@Test
+	void testGetBereikbareToestellen() {
+		pc.verbind(wifi);
 		
 		Toestel telefoon = new Toestel();
 		telefoon.verbind(wifi);
@@ -33,10 +45,15 @@ class InternetwerkTest {
 		server.verbind(vierg);
 		
 		assertEquals(Set.of(server, telefoon, pc), pc.getBereikbareToestellen(1));
-		
+	}
+	
+	@Test
+	void testOntkoppel() {
+		pc.verbind(wifi);
 		pc.ontkoppel(wifi);
+		
 		assertEquals(Set.of(), pc.getNetwerken());
-		assertEquals(Set.of(telefoon), wifi.getToestellen());
+		assertEquals(Set.of(), wifi.getToestellen());
 	}
 
 }
